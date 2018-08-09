@@ -12,7 +12,7 @@ var threshold uint
 func init() {
 	flag.BoolVar(&debug, "d", false, "enable debug mode")
 	flag.StringVar(&path, "p", "/org/freedesktop/UPower/devices/battery_BAT1", "path of battery upower battery device (run upower -e)")
-	flag.UintVar(&threshold, "t", 20, "threshold for send notification to daemon")
+	flag.UintVar(&threshold, "t", 20, "threshold of critical situation")
 }
 
 func main() {
