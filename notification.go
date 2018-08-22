@@ -5,8 +5,16 @@ import (
 	"fmt"
 )
 
-func notification(percentage uint) error {
-	cmd := exec.Command("notify-send", "-u", "critical", "-t", "5000", notificationTitle(percentage), notificationSummary(percentage))
+func notification(percentage uint, chargintState uint, withIcon bool) error {
+	command := "notify-send"
+	var args []string
+	if withIcon {
+		args = []string{"-u", "critical", "-t", "5000", notificationTitle(percentage), notificationSummary(percentage), "-i", notificationIcon(percentage, chargintState)}
+	} else {
+		args = []string{"-u", "critical", "-t", "5000", notificationTitle(percentage), notificationSummary(percentage)}
+	}
+	cmd := exec.Command(command, args...)	
+	
 	if err := cmd.Run(); err != nil {
 		return err
 	}
@@ -37,5 +45,42 @@ func notificationSummary(percentage uint) string  {
 		return "Please Connect Charger to Device"
 	default:
 		return ""
+	}
+}
+
+func notificationIcon(percentage uint, chargingState uint) string {
+	switch {
+	case chargingState == 1:
+		return chargingIcon(percentage)
+	case chargingState == 0:
+		return nonChargingIcon(percentage)
+	default:
+		return ""
+	}
+}
+
+func chargingIcon(percentage uint) string {
+	switch {
+	case percentage <= 1:
+		return "battery-empty"
+	case percentage <= threshold:
+		return "battery-low-charging"
+	case percentage == 100:
+		return "battery-full-charged"
+	default:
+		return "battery-good-charging"
+	}	
+}
+
+func nonChargingIcon(percentage uint) string {
+	switch {
+	case percentage <= 1:
+		return "battery-empty"
+	case percentage <= threshold:
+		return "battery-low"
+	case percentage == 100:
+		return "battery-full"
+	default:
+		return "battery-good"
 	}
 }
