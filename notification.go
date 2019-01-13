@@ -2,24 +2,34 @@ package main
 
 import (
 	"fmt"
-	"os/exec"
+
+	"github.com/esiqveland/notify"
+	"github.com/godbus/dbus"
 )
 
-func notification(percentage uint, chargintState string, withIcon bool) error {
-	command := "notify-send"
-	var args []string
-	if withIcon {
-		args = []string{"-u", "critical", "-t", "5000", notificationTitle(percentage), notificationSummary(percentage), "-i", notificationIcon(percentage, chargintState)}
-	} else {
-		args = []string{"-u", "critical", "-t", "5000", notificationTitle(percentage), notificationSummary(percentage)}
-	}
-	cmd := exec.Command(command, args...)
-
-	if err := cmd.Run(); err != nil {
-		return err
+func notification(percentage uint, chargingState string, withIcon bool) error {
+	conn, err := dbus.SessionBus()
+	if err != nil {
+		panic(err)
 	}
 
-	return nil
+	urgency := 1 // normal
+	if percentage < threshold {
+		urgency = 2 //critical
+	}
+
+	n := notify.Notification{
+		AppName:       "Battery Notifier",
+		ReplacesID:    uint32(0),
+		AppIcon:       notificationIcon(percentage, chargingState),
+		Body:          notificationSummary(percentage),
+		Summary:       notificationTitle(percentage),
+		Hints:         map[string]dbus.Variant{"urgency": dbus.MakeVariant(urgency)},
+		ExpireTimeout: int32(3000),
+	}
+
+	_, err = notify.SendNotification(conn, n)
+	return err
 }
 
 func notificationTitle(percentage uint) string {
