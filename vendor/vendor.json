@@ -1,0 +1,37 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "f9f5VcKClUxKzv/vBy8wwqqZzV8=",
+			"path": "github.com/esiqveland/notify",
+			"revision": "1da6eb444e3b12eaf2ba0ba2c1b16e03c46facaa",
+			"revisionTime": "2018-05-02T21:55:43Z"
+		},
+		{
+			"checksumSHA1": "IGG0H5BLexOGixBFwXb8ItKKrFk=",
+			"path": "github.com/godbus/dbus",
+			"revision": "2e8d661d7ae1370037ffeb14517df4e9bb7b5c56",
+			"revisionTime": "2018-12-25T12:45:39Z"
+		},
+		{
+			"checksumSHA1": "rb5GvmqE9qcvJcaaf3GKEjp3mRE=",
+			"path": "github.com/rsjethani/sysinfo",
+			"revision": "2f81d21cee52b2d1e6dac82b161ef02b745b0fb8",
+			"revisionTime": "2019-01-13T14:06:59Z"
+		},
+		{
+			"checksumSHA1": "k0OrlOQyA71kzuaQTo92N2g4caM=",
+			"path": "github.com/rsjethani/sysinfo/builtins",
+			"revision": "2f81d21cee52b2d1e6dac82b161ef02b745b0fb8",
+			"revisionTime": "2019-01-13T14:06:59Z"
+		},
+		{
+			"checksumSHA1": "cOIflcJWh+j+ZC/9gZB3OVASGZ8=",
+			"path": "github.com/rsjethani/sysinfo/interfaces",
+			"revision": "2f81d21cee52b2d1e6dac82b161ef02b745b0fb8",
+			"revisionTime": "2019-01-13T14:06:59Z"
+		}
+	],
+	"rootPath": "github.com/meysampg/battery_notifier"
+}

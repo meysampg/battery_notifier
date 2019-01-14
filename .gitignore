@@ -14,3 +14,7 @@ battery_notifier
 
 # goland
 .idea
+
+#govendor
+vendor/
+! vendor/vendor.json
