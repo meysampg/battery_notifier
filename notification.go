@@ -7,7 +7,7 @@ import (
 	"github.com/godbus/dbus"
 )
 
-func notification(percentage uint, chargingState string, withIcon bool) error {
+func sendNotification(percentage uint, chargingState string) error {
 	conn, err := dbus.SessionBus()
 	if err != nil {
 		panic(err)
