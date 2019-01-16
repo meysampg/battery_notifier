@@ -14,13 +14,13 @@ func sendNotification(percentage uint, chargingState string) error {
 	}
 
 	urgency := 1 // normal
-	if percentage < threshold {
+	if percentage < 5 {
 		urgency = 2 //critical
 	}
 
 	n := notify.Notification{
 		AppName:       "Battery Notifier",
-		ReplacesID:    uint32(0),
+		ReplacesID:    0,
 		AppIcon:       notificationIcon(percentage, chargingState),
 		Body:          notificationSummary(percentage),
 		Summary:       notificationTitle(percentage),
@@ -38,7 +38,7 @@ func notificationTitle(percentage uint) string {
 
 func batteryAdjective(percentage uint) string {
 	switch {
-	case percentage <= threshold:
+	case percentage <= argThreshold:
 		return "LOW"
 	case percentage <= 50:
 		return "is OK"
@@ -51,7 +51,7 @@ func batteryAdjective(percentage uint) string {
 
 func notificationSummary(percentage uint) string {
 	switch {
-	case percentage <= threshold:
+	case percentage <= argThreshold:
 		return "Please Connect Charger to Device"
 	default:
 		return ""
@@ -73,7 +73,7 @@ func chargingIcon(percentage uint) string {
 	switch {
 	case percentage <= 1:
 		return "battery-empty"
-	case percentage <= threshold:
+	case percentage <= argThreshold:
 		return "battery-low-charging"
 	case percentage == 100:
 		return "battery-full-charged"
@@ -86,7 +86,7 @@ func nonChargingIcon(percentage uint) string {
 	switch {
 	case percentage <= 1:
 		return "battery-empty"
-	case percentage <= threshold:
+	case percentage <= argThreshold:
 		return "battery-low"
 	case percentage == 100:
 		return "battery-full"
