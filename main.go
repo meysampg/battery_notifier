@@ -43,7 +43,7 @@ func main() {
 
 		if argWatch {
 			sleepInterval := argNormalInterval
-			if capacity < argThreshold {
+			if state == "Discharging" && capacity < argThreshold {
 				sleepInterval = argLowInterval
 				err = sendNotification(capacity, state)
 				if err != nil {
