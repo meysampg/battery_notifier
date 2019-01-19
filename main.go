@@ -17,10 +17,10 @@ var argLowInterval time.Duration
 var argNormalInterval time.Duration
 
 func init() {
-	flag.BoolVar(&argWatch, "w", false, "continously watch battery status")
-	flag.DurationVar(&argLowInterval, "l", time.Minute*2, "battery check interval during low battery")
-	flag.DurationVar(&argNormalInterval, "n", time.Minute*5, "battery check interval during good battery")
-	flag.UintVar(&argThreshold, "t", 20, "threshold below which battery capacty would be considered critical")
+	flag.DurationVar(&argLowInterval, "l", time.Minute*2, "battery check interval during low (< threshold) battery")
+	flag.DurationVar(&argNormalInterval, "n", time.Minute*5, "battery check interval during good/normal (> threshold) battery")
+	flag.BoolVar(&argWatch, "w", false, "continuously watch battery level at preset interval. The interval depends on values of '-n' and '-l'")
+	flag.UintVar(&argThreshold, "t", 20, "battery percentage threshold, below which the battery will be condiered as *low* and the user will start getting desktop notifications about low battery.")
 }
 
 func getBatteryStatus() (uint, string, error) {
