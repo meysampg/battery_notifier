@@ -6,6 +6,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/esiqveland/notify"
+	"github.com/godbus/dbus"
 	"github.com/rsjethani/sysinfo"
 )
 
@@ -34,6 +36,32 @@ func getBatteryStatus() (uint, string, error) {
 	return capacity, state, nil
 }
 
+func sendNotification(percentage uint, chargingState string) error {
+	conn, err := dbus.SessionBus()
+	if err != nil {
+		return err
+	}
+
+	urgency := 1 // normal
+	icon := "battery-low"
+	if percentage <= 5 {
+		urgency = 2 //critical
+		icon = "battery-empty"
+	}
+
+	n := notify.Notification{
+		AppName:       "Battery Notifier",
+		ReplacesID:    0,
+		AppIcon:       icon,
+		Summary:       fmt.Sprintf("Only %v%% battery remaining !!!", percentage),
+		Hints:         map[string]dbus.Variant{"urgency": dbus.MakeVariant(urgency)},
+		ExpireTimeout: int32(3000),
+	}
+
+	_, err = notify.SendNotification(conn, n)
+	return err
+}
+
 func main() {
 	flag.Parse()
 
@@ -57,7 +85,7 @@ func main() {
 			sleepInterval = argLowInterval
 			err = sendNotification(capacity, state)
 			if err != nil {
-				fmt.Println("an error on displaying notification occured: %s", err)
+				fmt.Println("Error while sending desktop notification: %v", err)
 				os.Exit(2)
 			}
 		}
