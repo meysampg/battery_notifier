@@ -11,12 +11,16 @@ import (
 	"github.com/rsjethani/sysinfo"
 )
 
+const appVersion = "2.0.0"
+
 var argWatch bool
 var argThreshold uint
+var argShowVersion bool
 var argLowInterval time.Duration
 var argNormalInterval time.Duration
 
 func init() {
+	flag.BoolVar(&argShowVersion, "v", false, "Show application version")
 	flag.DurationVar(&argLowInterval, "l", time.Minute*2, "battery check interval during low (< threshold) battery")
 	flag.DurationVar(&argNormalInterval, "n", time.Minute*5, "battery check interval during good/normal (> threshold) battery")
 	flag.BoolVar(&argWatch, "w", false, "continuously watch battery level at preset interval. The interval depends on values of '-n' and '-l'")
@@ -64,6 +68,11 @@ func sendNotification(percentage uint, chargingState string) error {
 
 func main() {
 	flag.Parse()
+
+	if argShowVersion {
+		fmt.Println(appVersion)
+		return
+	}
 
 	for {
 		capacity, state, err := getBatteryStatus()
