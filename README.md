@@ -3,6 +3,7 @@ This is a simple application to show current battery status (percentage and char
 
 
 ## Options :construction_worker:
+* `-v`: show application version.
 * `-t`: battery percentage threshold, below which the battery will be condiered as *low* and the user will start getting desktop notifications about low battery.
 
 * `-l`: battery check interval during low (< threshold) battery.

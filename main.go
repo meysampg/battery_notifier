@@ -11,7 +11,7 @@ import (
 	"github.com/rsjethani/sysinfo"
 )
 
-const appVersion = "2.0.0"
+const appVersion = "v2.1.0"
 
 var argWatch bool
 var argThreshold uint
@@ -70,7 +70,7 @@ func main() {
 	flag.Parse()
 
 	if argShowVersion {
-		fmt.Println(appVersion)
+		fmt.Println("battery_notifier", appVersion)
 		return
 	}
 
@@ -82,7 +82,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		fmt.Println(capacity, state)
+		fmt.Printf("Current Capacity: %v%%, Current State: %v\n", capacity, state)
 
 		// If -w not given, exit
 		if !argWatch {
