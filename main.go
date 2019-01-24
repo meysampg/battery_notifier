@@ -11,7 +11,7 @@ import (
 	"github.com/rsjethani/sysinfo"
 )
 
-const appVersion = "v2.1.0"
+const appVersion = "v2.1.1"
 
 var notifID uint32
 var argWatch bool
