@@ -13,6 +13,7 @@ import (
 
 const appVersion = "v2.1.0"
 
+var notifID uint32
 var argWatch bool
 var argThreshold uint
 var argShowVersion bool
@@ -48,21 +49,21 @@ func sendNotification(percentage uint, chargingState string) error {
 
 	urgency := 1 // normal
 	icon := "battery-low"
-	if percentage <= 5 {
+	if percentage < 10 {
 		urgency = 2 //critical
 		icon = "battery-empty"
 	}
 
 	n := notify.Notification{
 		AppName:       "Battery Notifier",
-		ReplacesID:    0,
+		ReplacesID:    notifID,
 		AppIcon:       icon,
 		Summary:       fmt.Sprintf("Only %v%% battery remaining !!!", percentage),
 		Hints:         map[string]dbus.Variant{"urgency": dbus.MakeVariant(urgency)},
 		ExpireTimeout: int32(3000),
 	}
 
-	_, err = notify.SendNotification(conn, n)
+	notifID, err = notify.SendNotification(conn, n)
 	return err
 }
 
