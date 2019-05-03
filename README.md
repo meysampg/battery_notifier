@@ -15,6 +15,8 @@ vendor packages and with `go build` or `govendor build` make the notifier!
 
 * `-w`: continuously watch battery level at preset interval. The interval depends on values of '-n' and '-l'.
 
+* `-p`: show the remaining percentage of the battery and exit.
+
 * `-h`: get help message and default values of flags/options.
 
 ## Creating a *Systemd Service* to keep watching battery even across reboots

@@ -11,11 +11,12 @@ import (
 	"github.com/rsjethani/sysinfo"
 )
 
-const appVersion = "v2.1.1"
+const appVersion = "v2.1.2"
 
 var notifID uint32
 var argWatch bool
 var argThreshold uint
+var argPercentage bool
 var argShowVersion bool
 var argLowInterval time.Duration
 var argNormalInterval time.Duration
@@ -26,6 +27,7 @@ func init() {
 	flag.DurationVar(&argNormalInterval, "n", time.Minute*5, "battery check interval during good/normal (> threshold) battery")
 	flag.BoolVar(&argWatch, "w", false, "continuously watch battery level at preset interval. The interval depends on values of '-n' and '-l'")
 	flag.UintVar(&argThreshold, "t", 20, "battery percentage threshold, below which the battery will be condiered as *low* and the user will start getting desktop notifications about low battery.")
+	flag.BoolVar(&argPercentage, "p", false, "just show the percentage of the battery.")
 }
 
 func getBatteryStatus() (uint, string, error) {
@@ -74,6 +76,17 @@ func main() {
 		fmt.Println("battery_notifier", appVersion)
 		return
 	}
+
+    if argPercentage {
+        capacity, _, err := getBatteryStatus()
+        if err != nil {
+            fmt.Println(err)
+            os.Exit(1)
+        }
+
+        fmt.Print(capacity)
+        return
+    }
 
 	for {
 		capacity, state, err := getBatteryStatus()
