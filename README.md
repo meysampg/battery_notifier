@@ -1,6 +1,9 @@
 # Battery Notifier :battery:
 This is a simple application to show current battery status (percentage and charging status). It can also watch the battery continuously and send periodic desktop notifications when the battery goes below a threshold percentage.
 
+## Development
+Install [govendor](https://github.com/kardianos/govendor), `sync` or `get`
+vendor packages and with `go build` or `govendor build` make the notifier!
 
 ## Options :construction_worker:
 * `-v`: show application version.
