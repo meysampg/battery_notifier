@@ -2,11 +2,11 @@
 This is a simple application to show current battery status (percentage and charging status). It can also watch the battery continuously and send periodic desktop notifications when the battery goes below a threshold percentage.
 
 ## Development
-Install [govendor](https://github.com/kardianos/govendor), `sync` or `get`
-vendor packages and with `go build` or `govendor build` make the notifier!
+Clone `https://github.com/meysampg/battery_notifier` and run `go mod vendor`.
 
 ## Options :construction_worker:
 * `-v`: show application version.
+
 * `-t`: battery percentage threshold, below which the battery will be condiered as *low* and the user will start getting desktop notifications about low battery.
 
 * `-l`: battery check interval during low (< threshold) battery.

@@ -17,4 +17,3 @@ battery_notifier
 
 #govendor
 vendor/
-! vendor/vendor.json

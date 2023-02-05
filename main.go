@@ -7,11 +7,15 @@ import (
 	"time"
 
 	"github.com/esiqveland/notify"
-	"github.com/godbus/dbus"
+	"github.com/godbus/dbus/v5"
 	"github.com/rsjethani/sysinfo"
 )
 
-const appVersion = "v2.1.2"
+var (
+	commit    string
+	version   string
+	buildTime string
+)
 
 var notifID uint32
 var argWatch bool
@@ -26,7 +30,7 @@ func init() {
 	flag.DurationVar(&argLowInterval, "l", time.Minute*2, "battery check interval during low (< threshold) battery")
 	flag.DurationVar(&argNormalInterval, "n", time.Minute*5, "battery check interval during good/normal (> threshold) battery")
 	flag.BoolVar(&argWatch, "w", false, "continuously watch battery level at preset interval. The interval depends on values of '-n' and '-l'")
-	flag.UintVar(&argThreshold, "t", 20, "battery percentage threshold, below which the battery will be condiered as *low* and the user will start getting desktop notifications about low battery.")
+	flag.UintVar(&argThreshold, "t", 20, "battery percentage threshold, below which the battery will be considered as *low* and the user will start getting desktop notifications about low battery.")
 	flag.BoolVar(&argPercentage, "p", false, "just show the percentage of the battery.")
 }
 
@@ -60,9 +64,9 @@ func sendNotification(percentage uint, chargingState string) error {
 		AppName:       "Battery Notifier",
 		ReplacesID:    notifID,
 		AppIcon:       icon,
-		Summary:       fmt.Sprintf("Only %v%% battery remaining !!!", percentage),
+		Summary:       fmt.Sprintf("Only %v%% battery remaining!!!", percentage),
 		Hints:         map[string]dbus.Variant{"urgency": dbus.MakeVariant(urgency)},
-		ExpireTimeout: int32(3000),
+		ExpireTimeout: 3 * time.Second,
 	}
 
 	notifID, err = notify.SendNotification(conn, n)
@@ -73,20 +77,20 @@ func main() {
 	flag.Parse()
 
 	if argShowVersion {
-		fmt.Println("battery_notifier", appVersion)
+		fmt.Printf("battery-notifier %s \n\t%s\n\tgit:%s\n", version, buildTime, commit)
 		return
 	}
 
-    if argPercentage {
-        capacity, _, err := getBatteryStatus()
-        if err != nil {
-            fmt.Println(err)
-            os.Exit(1)
-        }
+	if argPercentage {
+		capacity, _, err := getBatteryStatus()
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
 
-        fmt.Print(capacity)
-        return
-    }
+		fmt.Print(capacity)
+		return
+	}
 
 	for {
 		capacity, state, err := getBatteryStatus()
@@ -108,7 +112,7 @@ func main() {
 			sleepInterval = argLowInterval
 			err = sendNotification(capacity, state)
 			if err != nil {
-				fmt.Println("Error while sending desktop notification: %v", err)
+				fmt.Printf("Error while sending desktop notification: %v\n", err)
 				os.Exit(2)
 			}
 		}
